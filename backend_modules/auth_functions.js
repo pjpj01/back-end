@@ -5,12 +5,12 @@ const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
 // 유저 권한 확인 함수
-// 여기서 username은 id를 의미!!
+// 여기서 userId는 id를 의미!!
 // callback 함수의 두 번째 매개변수가 null -> 아이디 틀림, false -> 비밀번호 틀림
-// 로그인이 성공했다면, {id: id, password: pw, phone_num: phone_num, student_id: student_id, name: name, affiliation: affiliation, division: divison} 형식의 객체 반환
+// 로그인이 성공했다면, {id: id, password: pw, phone_num: phone_num, student_id: student_id, name: name, affiliation: affiliation, division: divison} 형식의 객체를 콜백에 전달
 function authenticateUser(userId, password, callback) {
     const query = 'SELECT * FROM users WHERE id = ? AND password = ?';
-    const storedHashedPassword = comparePassword(userId, password, (err, result_password) => {
+    comparePassword(userId, password, (err, result_password) => {
         const storedHashedPassword = result_password;
         const values = [userId, storedHashedPassword];
         // 아이디 혹은 비밀번호가 틀린경우 각각 storedHashedPassword가 null, false.
@@ -47,7 +47,7 @@ function authenticateUser(userId, password, callback) {
     
 }
 
-// 비밀번호가 맞으면 해시된 비밀번호 반환, 비밀번호가 틀렸으면 false 반환, 아이디가 틀렸으면 null 반환
+// 비밀번호가 맞으면 해시된 비밀번호를 콜백에 전달, 비밀번호가 틀렸으면 false 전달, 아이디가 틀렸으면(없거나 , 같은 아이디가 DB에 2개 이상 있으면) null 전달
 function comparePassword(userId, userInputPassword, callback) {
     let storedHashedPassword;
     db.query('SELECT password FROM users WHERE id = ?', [userId], (err, results) => {

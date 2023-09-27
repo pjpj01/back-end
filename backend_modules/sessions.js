@@ -85,7 +85,7 @@ router.post('/signup', (req, res) => {
                 auth_functions.signup(query, info, (err, results) => {
                     // 조건 : 둘다 null인 건 signup에 성공하여 유저의 정보가 DB에 전송됐음을 의미한다.
                     if (err === null && results === null) {
-                        res.redirect('login.html');
+                        res.redirect('/login.html');
                     }
                     // 왠지는 모르지만 signup 실패
                     else {
