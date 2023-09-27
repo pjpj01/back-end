@@ -9,7 +9,7 @@ const mysqlSession = require('express-mysql-session')(expressSession);
 var app = express();      //express 서버 객체
 const socketIo = require('socket.io');
 let bodyParser_post = require('body-parser');       //post 방식 파서
-const reservation = require('./server.js');
+let router = express.Router();
 var usId;
 
 //db로 실험 - 성공
